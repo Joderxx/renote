@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="top.renote.daoMapper.AdviceMapper">
+    <resultMap id="Advice" type="top.renote.model.Advice">
+        <id property="adviceId" column="advice_id" />
+        <result property="gmtCreate" column="gmt_create" />
+        <result property="type" column="type" />
+        <result property="commentId" column="comment_id" />
+        <result property="cId" column="c_id" />
+        <result property="noteId" column="note_id" />
+        <result property="userId" column="user_id" />
+        <result property="uId" column="u_id" />
+
+    </resultMap>
+
+   <insert id="insertAdvice" parameterType="top.renote.model.Advice" >
+       INSERT INTO advice(user_id, gmt_create, type,u_id
+       <if test="noteId!=null">
+           , note_id
+       </if>
+       <if test="commentId!=null">
+           , comment_id
+       </if>
+       <if test="cId!=null">
+           , c_id
+       </if>
+       )
+       VALUES (#{userId},now(),#{type},#{uId}
+        <if test="noteId!=null">
+            ,#{noteId}
+        </if>
+       <if test="commentId!=null">
+           ,#{commentId}
+       </if>
+       <if test="cId!=null">
+           ,#{cId}
+       </if>
+       )
+   </insert>
+
+    <select id="countUnAdvice" parameterType="Long" resultType="Integer">
+        SELECT COUNT(*) FROM advice WHERE user_id=#{userId} and flag = 0
+    </select>
+
+    <update id="updateAdvice" parameterType="Long" >
+        UPDATE advice SET flag = 1 WHERE user_id = #{userId}
+    </update>
+
+    <select id="selectAllAdvice" parameterType="Long" resultMap="Advice">
+        SELECT user_id,u_id,type,gmt_create,note_id,comment_id,c_id
+        FROM advice WHERE user_id = #{userId} ORDER BY gmt_create DESC
+    </select>
+</mapper>
+

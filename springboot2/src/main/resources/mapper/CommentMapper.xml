@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="top.renote.daoMapper.CommentMapper">
+   <resultMap id="SharedNoteComment" type="top.renote.model.SharedNoteComment">
+       <id property="commentId" column="comment_id" />
+       <result property="content" column="content" />
+       <result property="gmtCreate" column="gmt_create" />
+       <result property="like" column="like" />
+       <result property="dislike" column="dislike" />
+       <result property="parentCommentId" column="parent_comment_id" />
+       <association property="user" resultMap="top.renote.daoMapper.UserMapper.User" />
+       <association property="note" resultMap="top.renote.daoMapper.NoteMapper.Note" />
+    </resultMap>
+
+    <select id="getUserComments" parameterType="Long" resultMap="SharedNoteComment">
+        select comment_id,content,cm.gmt_create,`like`,dislike,parent_comment_id,
+        u.user_name,u.avatar,n.note_id,n.note_name
+         from shared_note_comment as cm,user as u,note as n
+         WHERE cm.user_id = u.user_id AND n.note_id = cm.note_id AND cm.user_id = #{userId} ORDER BY cm.gmt_create DESC
+    </select>
+
+    <select id="getCommentChildCount" parameterType="Long" resultType="Integer">
+        SELECT COUNT(*) FROM shared_note_comment WHERE parent_comment_id = #{id}
+    </select>
+
+    <delete id="deleteOne" parameterType="Long" >
+        DELETE FROM shared_note_comment WHERE comment_id = #{id} OR parent_comment_id = #{id}
+    </delete>
+
+    <select id="isBelongUser" resultType="Integer">
+        SELECT COUNT(*) FROM shared_note_comment WHERE user_id = #{userId} AND comment_id = #{commentId}
+    </select>
+
+    <select id="isBelongNote" resultType="Integer">
+        SELECT COUNT(*) FROM shared_note_comment WHERE note_id = #{noteId} AND comment_id = #{commentId}
+    </select>
+
+    <insert id="addOne" parameterType="top.renote.model.SharedNoteComment" useGeneratedKeys="true" keyProperty="commentId">
+        INSERT INTO shared_note_comment(content, gmt_create, `like`, dislike, parent_comment_id,user_id,note_id)
+         VALUES (#{content},#{gmtCreate},#{like},#{dislike},#{parentCommentId},#{user.userId},#{note.noteId})
+    </insert>
+
+    <select id="getNoteComments" parameterType="Long" resultMap="SharedNoteComment">
+        select comment_id,content,cm.gmt_create,`like`,dislike,parent_comment_id,
+        u.user_name,u.avatar,n.note_id
+         from shared_note_comment as cm,user as u,note as n
+         WHERE cm.user_id = u.user_id AND n.note_id = cm.note_id AND cm.note_id = #{noteId}
+    </select>
+
+    <select id="getChildComments" parameterType="Long" resultMap="SharedNoteComment">
+        select comment_id,content,cm.gmt_create,`like`,dislike,parent_comment_id,
+        u.user_name,u.avatar,n.note_id
+         from shared_note_comment as cm,user as u,note as n
+         WHERE cm.user_id = u.user_id AND n.note_id = cm.note_id AND cm.parent_comment_id = #{commentId}
+    </select>
+
+    <update id="addDisLike">
+        UPDATE shared_note_comment SET `dislike` = `dislike`+1 WHERE comment_id = #{commentId}
+    </update>
+
+    <update id="addLike">
+        UPDATE shared_note_comment SET `like` = `like`+1 WHERE comment_id = #{commentId}
+    </update>
+
+    <select id="getCommentById" parameterType="Long" resultMap="SharedNoteComment">
+        SELECT * FROM shared_note_comment WHERE comment_id=#{commentId}
+    </select>
+</mapper>
+

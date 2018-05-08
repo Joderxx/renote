@@ -1,0 +1,34 @@
+spring:
+    datasource:
+        url: jdbc:mysql://127.0.0.1:3306/renote?serverTimezone=UTC&characterEncoding=utf8
+        username: root
+        password: Renote910351        #Renote910351   root
+        driver-class-name: com.mysql.jdbc.Driver
+    redis:
+      database: 0
+      port: 6379
+      password:
+      host: 127.0.0.1
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+
+logging:
+  file: /usr/develop/log/recommend.log        #/usr/develop/log/recommend.log  /usr/log/recommend.log
+  level:
+    top.renote: info
+  root: info
+  pattern:
+    file: '%d{yyyy-MM-dd HH:mm:ss}   %-5level   %msg%n'
+
+recommend:
+  neighborhood: 5
+  size: 5
+  recentSize: 1
+
+python:
+  dir: /usr/develop/pypath/renote/         #/usr/develop/pypath/renote/   /usr/pypath/renote/ #python文件路径
+  vm:  python3 #python.exe路径
+  trainfile: train_model.py #训练模型py文件路径
+  neighborfile: deal_data.py #近邻py文件路径
+  neighborsize: 5

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="top.renote.daoMapper.InterestMapper">
+    <resultMap id="Interest" type="top.renote.model.Interest">
+        <id property="likeID" column="like_id" />
+        <result property="types" column="types" />
+        <association property="user" resultMap="top.renote.daoMapper.UserMapper.User" />
+        <association property="note" resultMap="top.renote.daoMapper.NoteMapper.Note" />
+    </resultMap>
+
+    <insert id="insertOne" parameterType="top.renote.model.Interest" >
+        INSERT ignore INTO interest(types, note_id, user_id)
+        VALUES(#{types},#{note.noteId},#{user.userId})
+    </insert>
+
+    <select id="getByUIdAndNId" resultMap="Interest" parameterType="top.renote.model.Interest">
+        SELECT login_id,types FROM interest WHERE user_id = #{user.userId} AND note_id = #{note.noteId}
+    </select>
+
+    <update id="updateTypes" parameterType="top.renote.model.Interest">
+        UPDATE interest SET types = #{types} WHERE user_id = #{user.userId} AND note_id = #{note.noteId}
+    </update>
+
+    <select id="isLike" resultType="Integer" >
+        SELECT COUNT(*) FROM interest WHERE user_id=#{userId} AND note_id=#{noteId}
+    </select>
+</mapper>
+

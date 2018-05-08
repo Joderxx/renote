@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>登陆到Renote</title>
+	<meta charset="utf-8">
+</head>
+<script src="js/jquery-3.2.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/other.css">
+<script src="js/others.js"></script>
+<body>
+	<div class="header-s">
+        <div class="h-l">
+            <img class="image-logo" src="images/renote.svg">
+            <span class="renote-logo">Renote</span>
+        </div>
+    </div>
+	<div class="container">
+    <h3 class="text-title">登录到Renote</h3>
+    <form method="post" onsubmit="return false" autocomplete="off">
+        <ul>
+            <li>
+                <input id="username" name="username" type="text" class="text username" placeholder="输入账号" onblur="checkUserid()" value="">
+                <div id="username_tips" class="tips"><img src="./images/error.svg" style="height: 100%;width: 100%">
+                </div>
+            </li>
+            <li>
+                <input id="password" name="password" type="password" class="text" placeholder="密码" onblur="checkUserpw()" value="">
+                <div id="password_tips" class="tips"><img src="./images/error.svg" style="height: 100%;width: 100%">
+                </div>
+            </li>
+            <li>
+                <input type="submit" value="登录" class="btn" id="login-btn">
+                <a href="register.html" target="_blank" class="register">注册</a>
+                <a href="#" target="_blank" class="forget">忘记密码？</a>
+            </li>
+        </ul>
+        <input type="checkbox" id="input-remember" style="display:none" checked="">
+    </form>
+
+    <!-- <div id="login-tips" class="msg"></div> -->
+
+   <!--  <div class="other">
+       <a class="weixin" node-type="weixin">
+           <img src="http://shared.ydstatic.com/at/2.0.6cz/styles/indexb/weixin@2x.png" alt="微信登录" title="微信登录" height="44">
+       </a>
+       <a class="weibo" node-type="weibo">
+           <img src="http://shared.ydstatic.com/at/2.0.6cz/styles/indexb/weibo@2x.png" alt="新浪微博登录" title="新浪微博登录" height="44">
+       </a>
+       <a class="qq" node-type="qq">
+           <img src="http://shared.ydstatic.com/at/2.0.6cz/styles/indexb/qq@2x.png" alt="QQ帐号登录" title="QQ帐号登录" height="44">
+       </a>
+   </div> -->
+</div>
+<script language="javascript">  
+function checkUserid(){  
+    var useridObj=document.getElementById("username");  
+    var userid=trim(useridObj.value);  
+    var useridRegex= /^\w{6,12}$/;  
+    var username_tips =document.getElementById("username_tips");
+    if(!userid){
+    	username_tips.style.display="block";
+    	username_tips.setAttribute("title","用户名不能为空");
+    }      
+    else if(!useridRegex.test(userid)) {
+    	username_tips.style.display="block";
+    	username_tips.setAttribute("title","账号长度不对");
+    } 
+    else{
+		username_tips.style.display="none";
+    	username_tips.setAttribute("title","");
+    }
+}  
+function checkUserpw(){  
+    var userpwObj=document.getElementById("password");  
+    var userpw=trim(userpwObj.value);  
+    var userpwRegex= /^\w{6,12}$/;  
+    var userpw_tips =document.getElementById("password_tips");
+    if(!userpw){
+    	password_tips.style.display="block";
+    	password_tips.setAttribute("title","用户名不能为空");
+    }      
+    else if(!userpwRegex.test(userpw)) {
+    	password_tips.style.display="block";
+    	password_tips.setAttribute("title","账号长度不对");
+    } 
+    else{
+		password_tips.style.display="none";
+    	password_tips.setAttribute("title","");
+    }
+}  
+function trim(s){  
+   return s.replace(/^\s+|\s+$/g,"");  
+}  
+</script> 
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Renote</title>
+	<meta charset="utf-8">
+</head>
+<link rel="stylesheet" type="text/css" href="css/renoteindex.css">
+<script type="text/javascript">
+function getScrollTop(){   
+    var scrollTop=0;   
+    if(document.documentElement&&document.documentElement.scrollTop){   
+        scrollTop=document.documentElement.scrollTop;   
+    }else if(document.body){   
+        scrollTop=document.body.scrollTop;   
+    }   
+    return scrollTop;   
+}   
+document.onscroll = function(){  
+	console.log(getScrollTop());
+	console.log(getScrollTop()>530);
+	if (getScrollTop()>530) {
+		document.getElementById('header').style.backgroundColor="#fff";
+		document.getElementsByTagName("a")[0].style.color="#666";
+		document.getElementsByTagName("a")[1].style.color="#666";
+		document.getElementsByTagName("a")[2].style.color="#666";
+	}else{
+		document.getElementById('header').style.backgroundColor="transparent";
+		document.getElementsByTagName("a")[0].style.color="#fff";
+		document.getElementsByTagName("a")[1].style.color="#fff";
+		document.getElementsByTagName("a")[2].style.color="#fff";
+	}
+    var top = getScrollTop()>640?640:getScrollTop();
+    document.getElementById('image').style.top = "-"+getScrollTop()/2+"px";
+    document.getElementById('top_content').style.opacity=1-getScrollTop()/650;
+}  
+</script>
+<body>
+<div id="header">
+	<div id="h-l">
+	<a class="text_a" href="">
+		<span class="image_static"><img src="images/u20.svg" style="height: 40px;width: 40px"></span>
+		<span class="renote_static">Renote</span>
+	</a>
+	</div>
+	<div id="h-r">
+		<a class="text_a" href="login"><span class="login_static">登录</span></a>
+		<a class="text_a" href="register"><span class="register_static">注册</span></a>
+	</div>
+</div>
+<div id="image"><img src="images/u1.jpg" style="width: 100%;"></div>
+<div id="main">
+	<ul>
+		<li class="content" id="top_content">
+			<img src="images/u22.png">
+			<span>
+			<h3>管理与扩充你的知识库</h3>
+			<p>在这里记录下你的一切，再从中探索更为宽广有用信息，完善你的知识体系。</p>
+			
+			<a href="login"><button>即刻尝试</button></a>
+			</span>
+		</li>
+		<li class="content">
+			<span>
+			<h3>随时随地地记录</h3>
+			<p>整理生活中的琐事，在同一个地方记录下来，方便日后更快速地找到它们。</p>
+			</span>
+			<img alt="svg" src="images/u40.svg"/>
+		</li>
+		<li class="content">
+			<img src="images/u41.svg">
+			<span>
+			<h3>高效记录与利用</h3>
+			<p>利用Markdown笔记的方式进行快捷高效的记录，并从中受益。</p>
+			</span>
+		</li>
+		<li class="content">			
+			<span>
+			<h3>知识共同分享</h3>
+			<p>团队之间分享彼此的知识库，共同讨论，掀起一番头脑风暴，合作完成团队目标，提升自我。</p>
+			</span>
+			<img src="images/u43.svg">
+		</li>
+		<li class="content">
+			<img src="images/u42.svg">
+			<span>
+			<h3>引领探索世界</h3>
+			<p>一个高质量的笔记应用，是会让你意识到你的潜在需求，进而主动去发掘和探索更宽广的世界。</p>
+			</span>
+		</li>
+		<li class="content">
+			<img src="images/u15.png">
+			<span style="width: 30%;padding-left: 100px;">
+			<h3><img src="images/u20.svg" style="height: 40px;width: 40px">&nbsp;Renote</h3>
+			<p>立即开始使用</p>
+				<a href="login"><button>转到Renote</button></a>
+			</span>
+		</li>
+		
+	</ul>
+</div>
+<div id="bottom">
+<ul>
+	<li>关于我们</li>
+	<li>帮助</li>
+	<li>使用条款</li>
+	<li>@2018</li>
+	<li>Renote</li>
+</ul>
+</div>
+</body>
+</html>

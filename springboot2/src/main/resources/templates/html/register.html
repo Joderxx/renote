@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>注册Renote账号</title>
+	<meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="css/other.css">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/register.js"></script>
+</head>
+
+<body>
+<div class="header-s">
+        <div class="h-l">
+            <img class="image-logo" src="images/renote.svg">
+            <span class="renote-logo">Renote</span>
+        </div>
+    </div>
+<div class="g-bd">
+	<div class="m-opr">
+		<h1 class="text-title">注册Renote账号</h1>
+		<form method="post" onsubmit="return false" autocomplete="off">
+        <ul>
+            <li>
+            	<label class="title">账号：</label>
+                <input id="account" name="account" type="text" class="text username" placeholder="输入账号" value="">
+                <div id="account_tips" class="tips"><img src="images/error.svg" style="height: 100%;width: 100%"></div>
+            </li>
+            <li>
+            	<label class="title">邮箱：</label>
+                <input id="email" name="email" type="email" class="text" placeholder="邮箱" value="">
+                <div id="email_tips" class="tips"><img src="images/error.svg" style="height: 100%;width: 100%"></div>
+            </li>
+            <li>
+            	<label class="title">性别：</label>
+            	<span><input name="sex" type="radio" class="radio" placeholder="sex" value="1" checked>&nbsp;男</span>
+                <span><input name="sex" type="radio" class="radio" placeholder="sex" value="0">&nbsp;女</span>
+                <span></span>
+            </li>
+            <li>
+            	<label class="title">密码：</label>
+                <input id="password" name="password" type="password" class="text" placeholder="密码" value="">
+                <div id="password_tips" class="tips"><img src="images/error.svg" style="height: 100%;width: 100%"></div>
+            </li>
+            <li>
+            	<label class="title">重复密码：</label>
+                <input id="repassword" name="repassword" type="password" class="text" placeholder="再次输入密码密码" value="">
+                <div id="repassword_tips" class="tips"><img src="images/error.svg" style="height: 100%;width: 100%"></div>
+            </li>
+             <li>
+            	<label class="title">验证码：</label>
+            	<img id="imgCode" title="看不清楚，点击切换" alt="验证码" src="code" style="position: relative; height: 44px;width: 150px;float: right;" onclick="this.src='code?d='+new Date().getTime()">
+                <input id="code" name="verificateCode" type="text" class="text" placeholder="验证码" value="">
+                 <div id="code_tips" class="tips"><img src="images/error.svg" style="height: 100%;width: 100%"></div>
+            </li>
+            <li>
+                <input type="submit" value="注册" class="btn" id="register-btn">
+            </li>
+        </ul>
+    </form>
+	</div>
+</div>
+</body>
+</html>

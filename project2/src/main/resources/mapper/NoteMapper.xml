@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="top.renote.mapper.NoteMapper">
+
+    <resultMap id="Note" type="top.renote.model.Note">
+        <id property="noteId" column="note_id" />
+        <result property="delete" column="delete" />
+        <result property="noteName" column="note_name" />
+        <result property="gmtCreate" column="gmt_create" />
+        <result property="gmtModified" column="gmt_modified" />
+        <association property="noteContent" column="nc_id"
+                     resultMap="top.renote.mapper.NoteContentMapper.NoteContent" />
+    </resultMap>
+
+    <select id="findNotes" resultMap="Note">
+        SELECT n.note_id,nc.content,nc.tag,n.gmt_create,n.gmt_modified,nc.type,nc.creater_id,n.note_name
+        FROM note as n,note_content as nc
+        WHERE n.nc_id = nc.nc_id AND n.note_id in
+        <foreach collection="array" item="id"
+                 index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="findRecent" resultType="Long" parameterType="Long">
+        SELECT note_id FROM note as n,nbook as nb WHERE n.nbook_id=nb.nbook_id AND nb.user_id=#{userId} ORDER BY n.gmt_modified DESC
+    </select>
+
+</mapper>
+

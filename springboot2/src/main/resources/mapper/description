@@ -1,0 +1,29 @@
+表的别名：
+user as u
+note as n
+nbook as nb
+comment_child as cc
+shared_note_address as ad
+shared_note_comment as cm
+verification as v
+register as rg
+root as r
+
+表对应列别名前缀：
+user => user_
+note => note
+nbook => nbook_
+shared_note_address => address_
+shared_note_comment => comment_
+verification => verification_
+register => 无(根据数据库原名)
+root => 无
+
+缺少接口:
+user： 查询用户分享地址  // shared_note & note
+note:缺少查询某用户评论（comment和comment_child )
+verification:缺少增、删、改、查
+comment:缺少增、删、改、查，查询评论子评论列表
+address:缺少增、删、改、查
+childcomment_:缺少增、删、改、查
+//comment & child

@@ -1,0 +1,91 @@
+server:
+  port: 8080
+
+spring:
+    datasource:
+        name: test
+        url: jdbc:mysql://127.0.0.1:3306/renote?serverTimezone=UTC&characterEncoding=utf8
+        username: root
+        password: Renote910351   #Renote910351  #root
+        driver-class-name: com.mysql.jdbc.Driver
+    redis:
+      database: 0
+      port: 6379
+      password:
+      host: 127.0.0.1
+    mail:
+      default-encoding: UTF-8
+      host: smtp.mxhichina.com
+      port: 465
+      username: renote@renote.top
+      password: mailSend7381284
+      properties:
+        mail:
+          smtp:
+            auth: true
+            ssl:
+              enable: true
+
+          transport:
+            protocol: smtp
+
+    freemarker:
+      template-loader-path: classpath:freemarker
+      settings:
+        locale: zh_CN
+    mvc:
+      view:
+        prefix: classpath:templates
+
+    resources:
+      static-locations: classpath:static
+    jmx:
+      enabled: false
+
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  config-location: classpath:/Configuration.xml
+
+logging:
+  file: /usr/develop/log/logger.log  #/usr/develop/log/logger.log #/usr/log/logger.log
+  level:
+    top.renote: info
+  root: info
+  pattern:
+    file: '%d{yyyy-MM-dd HH:mm:ss}   %-5level   %msg%n'
+
+
+verification:
+  font:
+    name: Consolas
+    style: 0
+    size: 35
+  height: 44
+  width: 150
+  interference: true
+  random: 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+
+python:
+  env: python3
+  path: /usr/develop/pypath/   #/usr/develop/pypath/   #/usr/pypath/
+  classification: renote/deal_data.py
+  search: renote/keywords.py
+
+
+web:
+  host: https://www.renote.top/
+
+pageSize: 10
+
+
+
+
+
+
+
+
+
+
+
+

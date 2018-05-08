@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="top.renote.daoMapper.NoteMapper">
+
+    <resultMap id="Note" type="top.renote.model.Note">
+        <id property="noteId" column="note_id" />
+        <result property="delete" column="delete" />
+        <result property="noteName" column="note_name" />
+        <result property="gmtCreate" column="gmt_create" />
+        <result property="gmtModified" column="gmt_modified" />
+
+        <association property="notebook" column="nbook_id"
+                     resultMap="top.renote.daoMapper.NotebookMapper.Notebook" />
+        <association property="noteContent" column="nc_id"
+                     resultMap="top.renote.daoMapper.NoteContentMapper.NoteContent" />
+    </resultMap>
+
+    <sql id="select_1">
+        n.note_id,n.`delete`,note_name,n.gmt_create,n.gmt_modified,tag,creater_id,shared,content,nc.nc_id,`type`
+    </sql>
+
+    <insert id="insertOneNote" keyProperty="noteId" useGeneratedKeys="true" parameterType="top.renote.model.Note">
+        INSERT ignore INTO note(note_name,`delete`, gmt_create, gmt_modified,nbook_id,nc_id)
+        VALUES(#{noteName},#{delete},#{gmtCreate},now(),#{notebook.nbookId},#{noteContent.ncId})
+    </insert>
+
+    <insert id="insertBatchNote" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="noteId">
+        INSERT ignore INTO note(
+        note_name,`delete`, gmt_create, gmt_modified,nbook_id
+        )VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.noteName},#{item.delete},#{item.gmtCreate},#{item.gmtModified},#{itrm.notebook.nbookId},#{item.noteContent.ncId})
+        </foreach>
+    </insert>
+
+    <select id="getAllNote" resultMap="Note">
+        select  <include refid="select_1" />
+        from note as n,note_content as nc WHERE n.nc_id = nc.nc_id ORDER BY gmt_modified DESC
+    </select>
+
+    <select id="getNoteById" resultMap="Note" parameterType="Long">
+        SELECT <include refid="select_1" />, note_name,root_name,nb.nbook_name
+        FROM note as n,note_content as nc,root as r,nbook as nb
+        WHERE note_id = #{id} AND n.nc_id = nc.nc_id
+        AND r.root_id = nb.root_id AND nb.nbook_id = n.nbook_id
+    </select>
+
+    <delete id="deleteOne" parameterType="Long">
+        DELETE FROM note WHERE note_id = #{id}
+    </delete>
+
+    <delete id="deleteBatch" parameterType="java.util.List">
+        DELETE FROM note WHERE `note_id` IN
+        <foreach collection="array" item="i" separator="," open="(" close=")">
+            #{i}
+        </foreach>
+    </delete>
+
+    <update id="updateName" parameterType="top.renote.model.Note">
+        UPDATE note SET note_name = #{noteName},gmt_modified = #{gmtModified} WHERE note_id = #{noteId}
+    </update>
+
+    <update id="updateTime" parameterType="top.renote.model.Note">
+        UPDATE note SET gmt_modified = #{gmtModified} WHERE note_id = #{noteId}
+    </update>
+
+    <update id="updateDelete" parameterType="top.renote.model.Note">
+        UPDATE note SET `delete` = #{delete} WHERE note_id = #{noteId}
+    </update>
+
+    <select id="getDeleteNoteById" parameterType="Long" resultMap="Note">
+        SELECT <include refid="select_1" />,r.root_name,nb.nbook_name
+        FROM note as n,note_content as nc,nbook as nb,root AS r
+        WHERE n.nc_id = nc.nc_id AND n.nbook_id = nb.nbook_id
+        AND nb.root_id = r.root_id
+        AND n.`delete` = 1 and nb.user_id = #{id}
+    </select>
+    <select id="getNoteByIdAndType" resultMap="Note">
+        SELECT <include refid="select_1" />
+        FROM note as n,note_content as nc,nbook as nb,root as r
+        WHERE n.nc_id = nc.nc_id AND n.nbook_id = nb.nbook_id
+        and nb.user_id = #{id} AND nb.root_id = r.root_id and r.root_name = #{type} AND n.`delete` != 1 ORDER BY n.gmt_modified DESC
+    </select>
+
+    <select id="getByIdAndNbId" resultMap="Note">
+        select * from note WHERE nbook_id = #{nbId} AND note_id = #{noteId} ORDER BY gmt_modified DESC
+    </select>
+
+    <select id="getByIdAndUId" resultMap="Note">
+        SELECT * FROM note as n,nbook as nb
+        WHERE n.nbook_id=n.nbook_id AND nb.user_id = #{userId} AND n.note_id = #{noteId} ORDER BY n.gmt_modified DESC
+    </select>
+
+    <select id="getNotesInNbook" parameterType="Long" resultMap="Note">
+        SELECT <include refid="select_1" />,r.root_name,nb.nbook_name
+        FROM note as n,note_content as nc,nbook as nb,root AS r
+        WHERE n.nbook_id = #{nbId} AND n.nc_id = nc.nc_id AND
+        r.root_id = nb.root_id and nb.nbook_id = n.nbook_id AND n.`delete` != 1
+        ORDER BY n.gmt_modified DESC
+    </select>
+
+    <select id="getHasNote" resultType="Integer">
+        SELECT COUNT(*) FROM note
+        WHERE nbook_id = #{nbId} AND note_name = #{name} AND note_id!=#{noteId}
+    </select>
+
+    <update id="updateNb"  >
+        UPDATE note SET nbook_id = #{nbId} WHERE note_id = #{noteId} AND gmt_modified = now()
+    </update>
+
+    <select id="isPublic" resultType="Integer" parameterType="Long">
+        SELECT COUNT(*) FROM note as n,note_content as nc
+        WHERE n.nc_id = nc.nc_id AND nc.shared = 1 AND n.note_id = #{noteId}
+    </select>
+
+    <select id="isShared" resultType="Integer" parameterType="Long">
+        SELECT COUNT(*) FROM shared_note_address WHERE note_id = #{noteId}
+    </select>
+
+    <select id="getNoteByAddress" parameterType="String" resultMap="Note">
+        SELECT <include refid="select_1" />
+        FROM note as n,note_content as nc,shared_note_address AS ad
+        WHERE n.nc_id = nc.nc_id AND n.note_id = ad.note_id AND ad.note_address = #{address}
+    </select>
+
+    <select id="findNotes" resultMap="Note">
+        SELECT n.note_id,nc.content,nc.tag,n.gmt_create,n.gmt_modified,nc.type,nc.creater_id,n.note_name
+        FROM note as n,note_content as nc
+        WHERE n.nc_id = nc.nc_id AND n.note_id in
+        <foreach collection="array" item="id"
+                 index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getTheNote" resultType="Long">
+        SELECT note_id FROM note
+        WHERE nbook_id = #{nbId} AND note_name = #{name}
+    </select>
+
+    <update id="updateShare" parameterType="Long">
+        UPDATE note_content SET shared = 0 WHERE nc_id = (SELECT n.nc_id FROM note AS n WHERE n.note_id=#{noteId})
+    </update>
+
+    <select id="getLikeNotes" parameterType="Long" resultMap="Note">
+        SELECT n.note_id,note_name,n.gmt_create,n.gmt_modified,tag,creater_id,content,nc.nc_id,`type`, note_name
+        FROM note as n,note_content as nc,interest as i
+        WHERE n.nc_id=nc.nc_id AND i.note_id = n.note_id AND i.user_id=#{userId}
+    </select>
+</mapper>
+

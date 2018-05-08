@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="top.renote.mapper.UserMapper">
+    <resultMap id="User" type="top.renote.model.User" >
+        <id property="userId" column="user_id" />
+        <result property="userName" column="user_name" />
+        <result property="sex" column="sex" />
+        <result property="avatar" column="avatar" />
+        <result property="account" column="account" />
+        <result property="password" column="password" />
+        <result property="email" column="email" />
+        <result property="gmtLastLogin" column="gmt_last_login" />
+        <result property="gmtCreate" column="gmt_create" />
+        <result property="gmtModified" column="gmt_modified"/>
+    </resultMap>
+
+    <select id="getUser" resultMap="User">
+        SELECT user_id,user_name,sex,avatar,account,password,
+        email,gmt_create,gmt_modified,gmt_last_login
+         FROM user
+        WHERE account = #{account} AND password = #{password}
+    </select>
+
+    <update id="updateLastLogin" parameterType="top.renote.model.User">
+        UPDATE user SET gmt_last_login = #{gmtLastLogin} WHERE user_id = #{userId}
+    </update>
+
+
+</mapper>
+

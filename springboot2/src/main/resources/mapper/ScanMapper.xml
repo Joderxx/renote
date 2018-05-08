@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="top.renote.daoMapper.ScanMapper">
+    <select id="getHasData" resultType="Integer">
+        SELECT COUNT(*) FROM scan WHERE user_id=#{userId} AND note_id=#{noteId}
+    </select>
+
+    <update id="updateTime" >
+        UPDATE scan SET gmt_create = now() WHERE user_id=#{userId} AND note_id=#{noteId}
+    </update>
+
+    <insert id="insertData" >
+        INSERT INTO scan(user_id,note_id,gmt_create) VALUES (#{userId},#{noteId},now())
+    </insert>
+</mapper>
+

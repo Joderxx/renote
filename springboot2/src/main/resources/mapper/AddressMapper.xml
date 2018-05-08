@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="top.renote.daoMapper.AddressMapper">
+    <resultMap id="SharedNoteAddress" type="top.renote.model.SharedNoteAddress">
+        <id property="sharedAddressId" column="shared_address_id" />
+        <result property="noteAddress" column="note_address" />
+        <association property="note" resultMap="top.renote.daoMapper.NoteMapper.Note" />
+        <association property="user" resultMap="top.renote.daoMapper.UserMapper.User" />
+    </resultMap>
+
+    <insert id="insertOneAddress" parameterType="top.renote.model.SharedNoteAddress" keyProperty="sharedAddressId" useGeneratedKeys="true">
+        insert ignore INTO shared_note_address(note_address,note_id,user_id) VALUES (#{noteAddress},#{note.noteId},#{user.userId})
+    </insert>
+
+    <select id="getRepeatAddress" parameterType="String" resultType="Integer">
+        SELECT COUNT(*) FROM shared_note_address WHERE note_address = #{address}
+    </select>
+
+    <delete id="deleteAddress" >
+        DELETE FROM shared_note_address WHERE user_id = #{userId} AND note_id = #{noteId}
+    </delete>
+
+    <select id="getAddressByNote" resultMap="SharedNoteAddress">
+        select * FROM shared_note_address WHERE user_id = #{userId} AND note_id = #{noteId}
+    </select>
+</mapper>
+

@@ -1,0 +1,217 @@
+/*登陆界面以及注册界面*/
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    width: 100%;
+    height: 100%;
+    background: url(../images/bg.svg) no-repeat fixed top;
+    -webkit-background-size: 100%;
+    background-size: 100%;
+}
+.header-s{
+    box-sizing: border-box;
+    /*position: fixed;*/
+    top: 0;
+    width: 100%;
+    height: 70px;
+    /*background-color: #fff;*/
+    color: #292929;
+    padding: 0 40px;
+    /*border-bottom: 1px solid #ddd;*/
+    font-size: 1.5em;
+    z-index: 5;
+    min-width: 700px;
+    overflow: hidden;
+}
+.h-l{
+    position: absolute;
+    box-sizing: border-box;
+    width: 500px;
+    padding: 20px 0;
+    height: 70px;
+}
+
+.image-logo {
+    position: relative;
+    padding: 0 10px;
+    height: 30px;
+    width: 30px;
+}
+.renote-logo {
+    position: relative;
+    bottom: 5px;
+    
+}
+
+
+.container {
+    top: 40px;
+    margin: 0 auto;
+    width: 320px;
+    position: relative;
+    padding: 48px 40px 34px 40px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 1px 1px #cbc9c9;
+    background: #fff;
+}
+.text-title {
+    font-size: 18px;
+    color: #333333;
+    line-height: 18px;
+    font-weight: normal;
+    text-align: left;
+    margin: 0 0 24px 0;
+}
+form {
+    display: block;
+    margin-top: 0em;
+}
+ul, menu, dir {
+    display: block;
+    list-style-type: disc;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+}
+.container li,.m-opr li {
+    text-align: center;
+    position: relative;
+    margin-bottom: 20px;
+    height: 44px;
+}
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+    list-style-type: none;
+}
+.container .text,.m-opr .text {
+    display: block;
+    padding: 6px;
+    width: 306px;
+    height: 30px;
+    text-indent: 4px;
+    border: 1px solid #E1E1E1;
+    color: #333;
+    border-radius: 4px;
+    font-size: 16px;
+}
+.container .tips,.m-opr .tips{
+    display: none;
+    position: absolute;
+    right: -30px;
+    top: 6px;
+    height: 30px;
+    width: 30px;
+}
+li span{
+    display: block;
+    float: left;
+    padding-top: 10px;
+    padding-left: 20px;
+    width: 70px;
+    height: 48px;
+    text-align: left;
+}
+#code {
+    width: 120px;
+}
+input {
+    /*-webkit-appearance: textfield;*/
+    background-color: white;
+    -webkit-rtl-ordering: logical;
+    cursor: text;
+    padding: 1px;
+    border-width: 2px;
+    border-style: inset;
+    border-color: initial;
+    border-image: initial;
+}
+input, textarea, select, button {
+    text-rendering: auto;
+    color: initial;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    margin: 0em;
+    font: 400 13.3333px Arial;
+}
+#login-btn,#register-btn {
+    background: #eb4132;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #FFFFFF;
+    display: block;
+    width: 100%;
+    height: 44px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 44px;
+    cursor: pointer;
+    border: none;
+    margin-top: 20px;
+}
+.register {
+    color: #929292;
+    display: block;
+    margin-top: 10px;
+    text-align: left;
+    float: left;
+}
+.forget {
+    color: #929292;
+    display: block;
+    margin-top: 10px;
+    text-align: right;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+.other {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: solid 1px #eee;
+    text-align: center;
+}
+.other a {
+    margin: 0 10px;
+}
+
+
+/*注册*/
+.g-bd {
+    position: relative;
+    width: 700px;
+    margin: 10px auto 50px auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 1px 1px #cbc9c9;
+}
+.m-opr {
+    margin-top: 0;
+    padding: 40px 150px 30px 150px;
+}
+li .title{
+    float: left;
+    text-align: right;
+    height: 44px;
+    width: 80px;
+    font-size: 16px;
+    color: #333333;
+    line-height: 16px;
+    font-weight: normal;
+    padding-top: 12px;
+}
+.m-opr form{
+    margin-top: 35px;
+}

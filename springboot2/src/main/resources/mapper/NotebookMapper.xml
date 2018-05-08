@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="top.renote.daoMapper.NotebookMapper">
+  <resultMap id="Notebook" type="top.renote.model.Notebook">
+    <id property="nbookId" column="nbook_id" />
+    <result property="nbookName" column="nbook_name" />
+    <result property="gmtCreate" column="gmt_create" />
+    <result property="gmtModified" column="gmt_modified" />
+    <result property="delete" column="delete" />
+    <association property="user" resultMap="top.renote.daoMapper.UserMapper.User" column="user_id" />
+    <association property="root" resultMap="top.renote.daoMapper.RootMapper.Root" column="root_id"/>
+    <collection property="notes" resultMap="top.renote.daoMapper.NoteMapper.Note" />
+  </resultMap>
+
+  <insert id="insertOne" parameterType="top.renote.model.Notebook" keyProperty="nbookId" useGeneratedKeys="true">
+    INSERT INTO nbook(nbook_name, gmt_create, gmt_modified, `delete`,user_id,root_id)
+    VALUES (#{nbookName},#{gmtCreate},#{gmtModified},#{delete},#{user.userId},#{root.rootId})
+  </insert>
+
+  <select id="getByNbIdAndUId" resultMap="Notebook">
+    SELECT * FROM nbook WHERE user_id = #{userId} AND nbook_id = #{nbId}
+  </select>
+
+  <select id="getNbookByUId" resultMap="Notebook" parameterType="Long">
+    SELECT nb.nbook_id,nb.nbook_name,nb.gmt_create,nb.gmt_modified,nb.`delete`,r.root_name
+    FROM nbook AS nb,root as r
+    WHERE nb.root_id=r.root_id AND r.root_name = 'private' AND nb.user_id = #{id} AND nb.`delete` = 0
+  </select>
+
+  <select id="getDelete" resultMap="Notebook" parameterType="Long">
+    SELECT nbook_id,nbook_name,gmt_create,gmt_modified,`delete`,root_name
+    FROM nbook AS nb,root as r
+    WHERE nb.root_id=r.root_id AND `delete` = 1 AND nb.user_id = #{id}
+  </select>
+
+  <select id="getHasNbook" resultType="Integer">
+    SELECT COUNT(*) FROM nbook AS nb,root as r
+    WHERE nb.root_id = r.root_id AND r.root_name = 'private' AND user_id = #{userId} AND nbook_name = #{name}
+  </select>
+
+  <update id="updateName" parameterType="top.renote.model.Notebook">
+    UPDATE nbook SET nbook_name = #{nbookName},gmt_modified = #{gmtModified} WHERE nbook_id = #{nbookId}
+  </update>
+
+  <select id="getUserId" parameterType="Long" resultType="Long">
+    SELECT user_id FROM nbook WHERE nbook_id = #{id}
+  </select>
+
+  <select id="getById" parameterType="Long" resultMap="Notebook">
+    SELECT nbook_id,nbook_name,gmt_create,gmt_modified,`delete`,root_name
+    FROM nbook as nb,root as r
+    WHERE nb.root_id = r.root_id AND nb.nbook_id = #{id}
+  </select>
+
+  <update id="updateDelete" parameterType="top.renote.model.Notebook">
+    UPDATE nbook SET `delete` = #{delete},gmt_modified = #{gmtModified}
+    WHERE nbook_id = #{nbookId}
+  </update>
+
+  <select id="getTypeNbook" resultMap="Notebook">
+    SELECT nb.nbook_id,nb.nbook_name,r.root_name
+    FROM nbook AS nb,root AS r
+    WHERE nb.root_id = r.root_id AND nb.user_id = #{userId} AND root_name = #{type} AND nb.`delete` = 0
+  </select>
+</mapper>
+

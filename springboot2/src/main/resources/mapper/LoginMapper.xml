@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.renote.daoMapper.LoginMapper">
+    <resultMap id="Login" type="top.renote.model.Login">
+        <id property="loginId" column="login_id" />
+        <result property="ip" column="ip" />
+        <result property="gmtCreate" column="gmt_create" />
+        <association property="user" resultMap="top.renote.daoMapper.UserMapper.User" />
+    </resultMap>
+
+    <insert id="insertOne" parameterType="top.renote.model.Login">
+        INSERT INTO login(ip, gmt_create, user_id) VALUES (#{ip},#{gmtCreate},#{user.userId})
+    </insert>
+</mapper>

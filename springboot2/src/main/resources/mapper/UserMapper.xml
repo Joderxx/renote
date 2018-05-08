@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="top.renote.daoMapper.UserMapper">
+    <resultMap id="User" type="top.renote.model.User" >
+        <id property="userId" column="user_id" />
+        <result property="userName" column="user_name" />
+        <result property="sex" column="sex" />
+        <result property="avatar" column="avatar" />
+        <result property="account" column="account" />
+        <result property="password" column="password" />
+        <result property="email" column="email" />
+        <result property="gmtLastLogin" column="gmt_last_login" />
+        <result property="gmtCreate" column="gmt_create" />
+        <result property="gmtModified" column="gmt_modified"/>
+    </resultMap>
+
+    <select id="getUser" resultMap="User">
+        SELECT user_id,user_name,sex,avatar,account,password,
+        email,gmt_create,gmt_modified,gmt_last_login
+         FROM user
+        WHERE account = #{account} AND password = #{password}
+    </select>
+
+    <select id="gethasUserWithAccount" resultType="Integer" parameterType="String">
+        SELECT COUNT(*)  FROM user WHERE account = #{account}
+    </select>
+
+    <select id="gethasUserWithEmail" resultType="Integer" parameterType="String">
+        SELECT COUNT(*) FROM user WHERE email = #{email}
+    </select>
+
+    <insert id="insertOneUser" parameterType="top.renote.model.User" useGeneratedKeys="true" keyProperty="userId">
+        INSERT ignore INTO user(user_name, sex, avatar,
+        account, password, email, gmt_create, gmt_last_login,
+        gmt_modified)
+        VALUES (#{userName},#{sex},#{avatar},#{account},#{password},
+        #{email},#{gmtCreate},#{gmtLastLogin},#{gmtModified})
+    </insert>
+
+    <select id="getUserWithAccount" parameterType="String" resultMap="User">
+        SELECT * FROM user WHERE account = #{account}
+    </select>
+
+    <select id="getUserById" parameterType="Long" resultMap="User">
+        SELECT * FROM user WHERE user_id = #{id}
+    </select>
+
+    <update id="updateLastLogin" parameterType="top.renote.model.User">
+        UPDATE user SET gmt_last_login = #{gmtLastLogin} WHERE user_id = #{userId}
+    </update>
+
+    <update id="updatePassword" parameterType="top.renote.model.User">
+        UPDATE "user" SET password = #{password},gmt_modified = now() WHERE user_id = #{userId}
+    </update>
+
+    <select id="getUserByNId" parameterType="Long" resultMap="User">
+        SELECT u.user_id, user_name,account,avatar
+        FROM `user` as u,note as n ,nbook as nb
+        WHERE u.user_id = nb.user_id AND nb.nbook_id = n.nbook_id AND n.note_id = #{noteId}
+    </select>
+
+    <select id="getUserByCId" parameterType="Long" resultMap="User">
+        SELECT u.user_id, user_name,account,avatar
+        FROM `user` as u,note as n ,nbook as nb,shared_note_comment AS c
+        WHERE u.user_id = nb.user_id AND nb.nbook_id = n.nbook_id AND n.note_id = c.note_id AND c.comment_id = #{commentId}
+    </select>
+
+</mapper>
+

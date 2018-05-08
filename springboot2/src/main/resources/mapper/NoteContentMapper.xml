@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="top.renote.daoMapper.NoteContentMapper">
+    <resultMap id="NoteContent" type="top.renote.model.NoteContent">
+        <id property="ncId" column="nc_id" />
+        <result property="content" column="content" />
+        <result property="createId" column="creater_id" />
+        <result property="shared" column="shared" />
+        <result property="tag" column="tag" />
+        <result property="type" column="type" />
+    </resultMap>
+
+    <insert id="insertOne" useGeneratedKeys="true" keyProperty="ncId" parameterType="top.renote.model.NoteContent">
+        INSERT INTO note_content(content, tag, creater_id,shared,`type`)
+         VALUES (#{content},#{tag},#{createId},#{shared},#{type})
+    </insert>
+
+    <delete id="deleteOne" parameterType="Long">
+        DELETE FROM note_content WHERE nc_id = #{id}
+    </delete>
+
+    <delete id="deleteBatch" parameterType="java.util.List">
+        DELETE FROM note_content WHERE nc_id in
+        <foreach collection="array" item="i" separator="," open="(" close=")">
+            #{i}
+        </foreach>
+    </delete>
+
+    <update id="updateContent" parameterType="top.renote.model.NoteContent">
+        UPDATE note_content SET content = #{content}
+        <if test="tag != null">
+            ,tag = #{tag}
+        </if>
+        WHERE nc_id = #{ncId}
+    </update>
+
+    <update id="updateTag" parameterType="top.renote.model.NoteContent">
+        UPDATE note_content SET tag = #{tag}
+        WHERE nc_id = #{ncId}
+    </update>
+
+    <select id="getNcById" parameterType="Long" resultMap="NoteContent">
+        SELECT nc_id,content,tag,shared,creater_id,`type` FROM note_content WHERE nc_id = #{id}
+    </select>
+
+    <select id="getPublicNotesContent" resultMap="NoteContent">
+        SELECT * FROM note_content WHERE shared = 1
+    </select>
+
+    <select id="getNcByNId" parameterType="Long" resultMap="NoteContent">
+        SELECT nc.nc_id,content,tag,creater_id,shared,`type`
+        FROM note_content AS nc,note as n
+        WHERE n.nc_id = nc.nc_id AND n.note_id = #{noteId}
+    </select>
+
+    <update id="updateShared" parameterType="top.renote.model.NoteContent">
+        UPDATE note_content SET shared = #{shared} WHERE nc_id = #{ncId}
+    </update>
+</mapper>
+

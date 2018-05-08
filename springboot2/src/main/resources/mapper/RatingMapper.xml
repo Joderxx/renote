@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.renote.daoMapper.RatingMapper">
+    <resultMap id="Rating" type="top.renote.model.Rating">
+        <id property="userId" column="user_id" />
+        <id property="noteId" column="note_id" />
+        <result property="preference" column="preference" />
+        <result property="createTime" column="create_time" />
+    </resultMap>
+
+    <insert id="insertOne" parameterType="top.renote.model.Rating">
+        INSERT INTO ratings(user_id, note_id, preference, `create_time`)
+        VALUES (#{userId},#{noteId},#{preference},#{createTime})
+    </insert>
+
+    <select id="getOne" parameterType="top.renote.model.Rating" resultMap="Rating">
+        select * from ratings WHERE user_id=#{userId} AND note_id = #{noteId}
+    </select>
+
+    <update id="updatePreference" parameterType="top.renote.model.Rating">
+        UPDATE ratings SET preference = #{preference} WHERE user_id=#{userId} AND note_id = #{noteId}
+    </update>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="top.renote.daoMapper.RmbMapper">
+    <resultMap id="Rmb" type="top.renote.model.Rmb">
+        <id property="rmbHashId" column="rmb_hash_id" />
+        <id property="rmbUUID" column="rmb_UUID" />
+        <result property="userId" column="user_id" />
+        <result property="gmtCreate" column="gmt_create" />
+    </resultMap>
+
+    <select id="getRmbWithHU" resultMap="Rmb" >
+        select * from rmb WHERE rmb_hash_id = #{rmbHashId} AND rmb_UUID = #{rmbUUID}
+    </select>
+
+    <delete id="deleteWithHU" >
+        DELETE FROM rmb WHERE rmb_hash_id = #{rmbHashId} AND rmb_UUID = #{rmbUUID}
+    </delete>
+
+    <insert id="addOne" parameterType="top.renote.model.Rmb" >
+        INSERT INTO rmb(rmb_hash_id, rmb_UUID, user_id, gmt_create)
+        VALUES (#{rmbHashId},#{rmbUUID},#{userId},#{gmtCreate})
+    </insert>
+
+</mapper>
+
